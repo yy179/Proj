@@ -1,0 +1,56 @@
+﻿@model Project.Entities.VolunteerEntity
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Удалить волонтера</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 2.5rem;
+            color: #dc3545;
+        }
+
+        .confirmation-container {
+            width: 50%;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .btn {
+            margin-top: 10px;
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Удалить волонтера</h1>
+
+    <div class="confirmation-container">
+        <h4>Вы уверены, что хотите удалить волонтера @Model.FirstName @Model.LastName?</h4>
+        <div>
+            <strong>Город:</strong> @Model.City
+        </div>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">Удалить</button>
+            <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+        </form>
+    </div>
+
+</body>
+</html>

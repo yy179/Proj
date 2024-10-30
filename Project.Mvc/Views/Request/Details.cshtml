@@ -1,0 +1,102 @@
+﻿@model Project.Entities.RequestEntity
+@{
+    ViewBag.Title = "Детали заявки";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 30px;
+            color: #007bff;
+        }
+
+        .details-container {
+            width: 60%;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .btn {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>@Model.Title</h2>
+
+    <div class="details-container">
+        <strong>Описание:</strong>
+        <p>@Model.Description</p>
+
+        <strong>Крайний срок:</strong> @Model.EndDate.ToString("dd-MM-yyyy")<br />
+        <strong>Важность:</strong> @Model.Importance<br />
+
+        @if (ViewBag.MilitaryUnit != null)
+        {
+            <p><strong>Подразделение:</strong> @ViewBag.MilitaryUnit.Name</p>
+        }
+
+        @if (ViewBag.TakenByVolunteer != null)
+        {
+            <p><strong>Принята волонтером:</strong> @ViewBag.TakenByVolunteer.LastName</p>
+        }
+        else if (ViewBag.TakenByOrganization != null)
+        {
+            <p><strong>Принята организацией:</strong> @ViewBag.TakenByOrganization.Name</p>
+        }
+
+        @if (ViewBag.CompletedByVolunteer != null)
+        {
+            <p><strong>Завершена волонтером:</strong> @ViewBag.CompletedByVolunteer.LastName</p>
+        }
+        else if (ViewBag.CompletedByOrganization != null)
+        {
+            <p><strong>Завершена организацией:</strong> @ViewBag.CompletedByOrganization.Name</p>
+        }
+    </div>
+
+    <hr />
+
+    @if (Model.IsActive != false)
+    {
+        <div class="details-container">
+            <form asp-action="TakeRequestAsVolunteer" method="post" class="mb-3">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <label for="volunteerSelect">Выберите волонтера:</label>
+                <select id="volunteerSelect" name="volunteerId" asp-items="ViewBag.Volunteers" class="form-control"></select>
+                <button type="submit" class="btn btn-primary mt-2">Взять как волонтер</button>
+            </form>
+
+            <form asp-action="TakeRequestAsOrganization" method="post" class="mb-3">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <label for="organizationSelect">Выберите организацию:</label>
+                <select id="organizationSelect" name="organizationId" asp-items="ViewBag.Organizations" class="form-control"></select>
+                <button type="submit" class="btn btn-primary mt-2">Взять как организация</button>
+            </form>
+
+            <form asp-action="Complete" method="post" style="display:inline;">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn btn-success">Завершить</button>
+            </form>
+        </div>
+    }
+
+</body>
+</html>

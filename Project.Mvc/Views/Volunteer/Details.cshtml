@@ -1,0 +1,93 @@
+﻿@model Project.Entities.VolunteerEntity
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Детали волонтера</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 2.5rem;
+            color: #007bff;
+        }
+
+        .volunteer-details {
+            width: 60%;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .organization-list, .request-list {
+            margin-top: 20px;
+        }
+
+        .btn {
+            margin: 10px 5px;
+            width: 48%;
+        }
+
+        .text-danger {
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Детали волонтера</h1>
+
+    <div class="volunteer-details">
+        <h4>@Model.FirstName @Model.LastName</h4>
+        <p>Город: @Model.City</p>
+        <p>Биография: @Model.Bio</p>
+        <p>Дата рождения: @Model.DateOfBirth.ToShortDateString()</p>
+    </div>
+
+    <h2>Организации</h2>
+    @if (ViewBag.Organizations != null && (ViewBag.Organizations).Count > 0)
+    {
+        <ul class="organization-list">
+            @foreach (var organization in ViewBag.Organizations)
+            {
+                <li>@organization.Name</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Нет активных организаций.</p>
+    }
+
+    <h2>Активные Заявки</h2>
+    @if (ViewBag.Requests != null && (ViewBag.Requests).Count > 0)
+    {
+        <ul class="request-list">
+            @foreach (var request in ViewBag.Requests)
+            {
+                <li>@request.Title</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Нет активных заявок.</p>
+    }
+
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Редактировать</a>
+        <a asp-action="Index" class="btn btn-primary">Назад к списку</a>
+    </div>
+
+</body>
+</html>

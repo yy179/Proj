@@ -1,0 +1,92 @@
+﻿@model Project.Entities.OrganizationEntity
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Детали организации</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            color: #007bff;
+        }
+
+        .details-container {
+            width: 60%;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .volunteers-list, .requests-list {
+            margin-top: 20px;
+            padding: 0;
+        }
+
+        .btn {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Детали организации</h1>
+
+    <div class="details-container">
+        <h4>@Model.Name</h4>
+        <p>Город: @Model.City</p>
+        <p>Описание: @Model.Description</p>
+
+        <h2>Волонтеры</h2>
+        @if (ViewBag.Volunteers != null && (ViewBag.Volunteers).Count > 0)
+        {
+            <ul class="volunteers-list">
+                @foreach (var volunteer in ViewBag.Volunteers)
+                {
+                    <li>
+                        @volunteer.FirstName @volunteer.LastName
+                        <form asp-action="RemoveVolunteer" asp-route-volunteerId="@volunteer.Id" asp-route-organizationId="@Model.Id" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                        </form>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>Нет активных волонтеров.</p>
+        }
+
+        <h2>Активные Заявки</h2>
+        @if (ViewBag.Requests != null && (ViewBag.Requests).Count > 0)
+        {
+            <ul class="requests-list">
+                @foreach (var request in ViewBag.Requests)
+                {
+                    <li>@request.Title</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>Нет активных заявок.</p>
+        }
+
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Редактировать</a>
+            <a asp-action="Index" class="btn btn-primary">Назад к списку</a>
+        </div>
+    </div>
+
+</body>
+</html>

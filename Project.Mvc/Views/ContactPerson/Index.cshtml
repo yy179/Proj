@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Project.Entities.ContactPersonEntity>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Список контактных лиц</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            color: #007bff;
+        }
+
+        .table {
+            margin-top: 20px;
+        }
+
+        .btn {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Список контактных лиц</h1>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var contactPerson in Model)
+                {
+                    <tr>
+                        <td>@contactPerson.FirstName</td>
+                        <td>@contactPerson.LastName</td>
+                        <td>
+                            <a asp-action="Delete" asp-route-id="@contactPerson.Id" class="btn btn-danger btn-sm">Удалить</a>
+                            <a asp-action="AddToMilitaryUnit" asp-route-id="@contactPerson.Id" class="btn btn-secondary btn-sm">Присоединить</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <a asp-action="Create" class="btn btn-primary">Добавить контактное лицо</a>
+    </div>
+
+</body>
+</html>
