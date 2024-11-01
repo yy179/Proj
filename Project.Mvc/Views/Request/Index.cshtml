@@ -8,28 +8,117 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <style>
         body {
-            background-color: #f8f9fa;
-            color: #343a40;
-            font-family: Arial, sans-serif;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            line-height: 1.42em;
+            color: #A7A1AE;
+            background-color: #1F2739;
+        }
+
+        h1 {
+            font-size: 3em;
+            font-weight: 300;
+            line-height: 1em;
+            text-align: center;
+            color: #4DC3FA;
         }
 
         h2 {
+            font-size: 1em;
+            font-weight: 300;
             text-align: center;
-            margin-top: 30px;
-            color: #007bff;
+            color: #FB667A;
+            padding-bottom: 2em;
         }
 
-        .table-container {
+        .container {
+            text-align: left;
             width: 80%;
-            margin: 20px auto;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            margin: 0 auto;
+            display: table;
+            padding: 0 0 2em 0;
+            max-height: 800px;
+            overflow-y: auto;
         }
+
+            .container th, .container td {
+                padding: 0.5em 0.5em;
+            }
+
+            .container th {
+                background-color: #1F2739;
+                font-size: 0.9em;
+            }
+
+            .container td {
+                font-weight: normal;
+                font-size: 0.85em;
+                box-shadow: 0 2px 2px -2px #0E1119;
+            }
+
+            .container tr:nth-child(odd) {
+                background-color: #323C50;
+            }
+
+            .container tr:nth-child(even) {
+                background-color: #2C3446;
+            }
+
+            .container td:first-child {
+                color: #FB667A;
+            }
+
+            .container tr:hover {
+                background-color: #464A52;
+                box-shadow: 0 6px 6px -6px #0E1119;
+            }
+
+            .container td:hover {
+                background-color: #FFF842;
+                color: #403E10;
+                font-weight: bold;
+                box-shadow: #7F7C21 -1px 1px, #7F7C21 -2px 2px, #7F7C21 -3px 3px, #7F7C21 -4px 4px, #7F7C21 -5px 5px, #7F7C21 -6px 6px;
+                transform: translate3d(6px, -6px, 0);
+                transition: all 0.4s linear;
+            }
 
         .btn {
-            margin-top: 10px;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1F2739;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+            .btn:hover {
+                background-color: #FFF842;
+                color: #403E10;
+            }
+
+        .action-link {
+            color: #FB667A;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+            .action-link:hover {
+                text-decoration: underline;
+            }
+
+
+        media (max-width: 800px) {
+            .container td:nth-child(4), .container th:nth-child(4)
+
+        {
+            display: none;
+        }
+
         }
     </style>
 </head>
@@ -37,8 +126,8 @@
 
     <h2>Все заявки</h2>
 
-    <div class="table-container">
-        <table class="table">
+    <div class="container">
+        <table class="container">
             <thead>
                 <tr>
                     <th>Заголовок</th>
@@ -59,10 +148,10 @@
                         <td>@request.Importance</td>
                         <td>@request.IsActive</td>
                         <td>
-                            <a asp-action="Details" asp-route-id="@request.Id" class="btn btn-info">Подробнее</a>
-                            <form asp-action="Delete" method="post" style="display:inline;">
+                            <a asp-action="Details" asp-route-id="@request.Id" class="action-link">Подробнее</a> |
+                            <form asp-action="Delete" method="post" class="action-link" style="display: inline;">
                                 <input type="hidden" name="id" value="@request.Id" />
-                                <button type="submit" class="btn btn-danger">Удалить</button>
+                                <button type="submit" class="action-link" style="border: none; background: none; padding: 0; cursor: pointer;">Удалить</button>
                             </form>
                         </td>
                     </tr>
@@ -71,7 +160,7 @@
         </table>
     </div>
 
-    <a asp-action="Create" class="btn btn-primary">Добавить заявку</a>
+    <a asp-action="Create" class="btn">Добавить заявку</a>
 
 </body>
 </html>

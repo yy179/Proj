@@ -6,62 +6,115 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Список волонтеров</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
-            color: #343a40;
-            font-family: Arial, sans-serif;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            line-height: 1.42em;
+            color: #A7A1AE;
+            background-color: #1F2739;
         }
 
         h1 {
+            font-size: 3em;
+            font-weight: 300;
+            line-height: 1em;
             text-align: center;
-            margin-top: 30px;
-            font-size: 2.5rem;
-            color: #007bff;
+            color: #4DC3FA;
         }
 
-        .table {
+        .container {
+            text-align: left;
             width: 80%;
-            margin: 20px auto;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+            display: table;
+            padding: 0 0 2em 0;
         }
 
-        .table th, .table td {
-            padding: 15px;
-            text-align: center;
-        }
+            .container th, .container td {
+                padding: 1.5% 2%;
+            }
 
-        .table thead {
-            background-color: #007bff;
-            color: white;
-        }
+            .container th {
+                background-color: #1F2739;
+            }
 
-        .table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+                .container th h1 {
+                    font-weight: bold;
+                    font-size: 1em;
+                    text-align: left;
+                    color: #185875;
+                }
 
-        .table tr:hover {
-            background-color: #e9ecef;
-        }
+            .container td {
+                font-weight: normal;
+                font-size: 1em;
+                box-shadow: 0 2px 2px -2px #0E1119;
+            }
+
+            .container tr:nth-child(odd) {
+                background-color: #323C50;
+            }
+
+            .container tr:nth-child(even) {
+                background-color: #2C3446;
+            }
+
+            .container td:first-child {
+                color: inherit;
+            }
+
+            .container tr:hover {
+                background-color: #464A52;
+                box-shadow: 0 6px 6px -6px #0E1119;
+            }
+
+            .container td:hover {
+                background-color: #FFF842;
+                color: #403E10;
+                font-weight: bold;
+                box-shadow: #7F7C21 -1px 1px, #7F7C21 -2px 2px;
+                transform: translate3d(6px, -6px, 0);
+                transition: all 0.4s linear;
+            }
 
         .btn {
-            display: block;
-            margin: 20px auto;
+            display: inline-block;
             padding: 10px 20px;
-            background-color: #007bff;
+            background-color: #1F2739;
             color: white;
-            border: none;
-            border-radius: 5px;
+            font-weight: bold;
             text-align: center;
             text-decoration: none;
-            font-size: 1rem;
+            border-radius: 5px;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s;
         }
 
-        .btn:hover {
-            background-color: #0056b3;
+            .btn:hover {
+                background-color: #FFF842;
+                color: #403E10;
+            }
+
+        .action-link {
+            color: #FB667A;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+            .action-link:hover {
+                text-decoration: underline;
+            }
+
+        media (max-width: 800px) {
+            .container td:nth-child(4), .container th:nth-child(4)
+
+        {
+            display: none;
+        }
+
         }
     </style>
 </head>
@@ -69,7 +122,7 @@
 
     <h1>Список волонтеров</h1>
 
-    <table class="table">
+    <table class="container">
         <thead>
             <tr>
                 <th>Имя</th>
@@ -86,10 +139,10 @@
                     <td>@volunteer.LastName</td>
                     <td>@volunteer.City</td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@volunteer.Id">Просмотр</a> |
-                        <a asp-action="Edit" asp-route-id="@volunteer.Id">Редактировать</a> |
-                        <a asp-action="Delete" asp-route-id="@volunteer.Id">Удалить</a> |
-                        <a asp-action="AddToOrganization" asp-route-id="@volunteer.Id">Присоединить</a>
+                        <a asp-action="Details" asp-route-id="@volunteer.Id" class="action-link">Просмотр</a> |
+                        <a asp-action="Edit" asp-route-id="@volunteer.Id" class="action-link">Редактировать</a> |
+                        <a asp-action="Delete" asp-route-id="@volunteer.Id" class="action-link">Удалить</a> |
+                        <a asp-action="AddToOrganization" asp-route-id="@volunteer.Id" class="action-link">Присоединить</a>
                     </td>
                 </tr>
             }

@@ -6,36 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Редактировать военную организацию</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
-            color: #343a40;
-            font-family: Arial, sans-serif;
+            font-family: 'Open Sans', sans-serif;
+            background-color: #1F2739;
+            color: #A7A1AE;
         }
 
         h1 {
             text-align: center;
             margin-top: 30px;
-            color: #007bff;
+            color: #4DC3FA;
         }
 
-        .container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            background-color: white;
+        .form-container {
+            width: 50%;
+            margin: 20px auto;
+            background-color: #2C3446;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .form-group label {
+            color: #FFF842;
         }
 
         .btn {
             margin-top: 10px;
+            background-color: #1F2739;
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+            .btn:hover {
+                background-color: #FFF842;
+                color: #403E10;
+            }
+
+        .text-danger {
+            color: #FB667A;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="form-container">
         <h1>Редактировать военную организацию</h1>
 
         <form asp-action="Edit" method="post">

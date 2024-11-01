@@ -6,26 +6,115 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Список контактных лиц</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
-            color: #343a40;
-            font-family: Arial, sans-serif;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            line-height: 1.42em;
+            color: #A7A1AE;
+            background-color: #1F2739;
         }
 
         h1 {
+            font-size: 3em;
+            font-weight: 300;
+            line-height: 1em;
             text-align: center;
-            margin-top: 30px;
-            color: #007bff;
+            color: #4DC3FA;
         }
 
-        .table {
-            margin-top: 20px;
+        .container {
+            text-align: left;
+            width: 80%;
+            margin: 0 auto;
+            display: table;
+            padding: 0 0 2em 0;
         }
+
+            .container th, .container td {
+                padding: 1.5% 2%;
+            }
+
+            .container th {
+                background-color: #1F2739;
+            }
+
+                .container th h1 {
+                    font-weight: bold;
+                    font-size: 1em;
+                    text-align: left;
+                    color: #185875;
+                }
+
+            .container td {
+                font-weight: normal;
+                font-size: 1em;
+                box-shadow: 0 2px 2px -2px #0E1119;
+            }
+
+            .container tr:nth-child(odd) {
+                background-color: #323C50;
+            }
+
+            .container tr:nth-child(even) {
+                background-color: #2C3446;
+            }
+
+            .container td:first-child {
+                color: inherit;
+            }
+
+            .container tr:hover {
+                background-color: #464A52;
+                box-shadow: 0 6px 6px -6px #0E1119;
+            }
+
+            .container td:hover {
+                background-color: #FFF842;
+                color: #403E10;
+                font-weight: bold;
+                box-shadow: #7F7C21 -1px 1px, #7F7C21 -2px 2px;
+                transform: translate3d(6px, -6px, 0);
+                transition: all 0.4s linear;
+            }
 
         .btn {
-            margin-top: 10px;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1F2739;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+            .btn:hover {
+                background-color: #FFF842;
+                color: #403E10;
+            }
+
+        .action-link {
+            color: #FB667A;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+            .action-link:hover {
+                text-decoration: underline;
+            }
+
+        media (max-width: 800px) {
+            .container td:nth-child(4), .container th:nth-child(4)
+
+        {
+            display: none;
+        }
+
         }
     </style>
 </head>
@@ -34,7 +123,7 @@
     <div class="container">
         <h1>Список контактных лиц</h1>
 
-        <table class="table table-bordered">
+        <table class="container">
             <thead>
                 <tr>
                     <th>Имя</th>
@@ -49,15 +138,15 @@
                         <td>@contactPerson.FirstName</td>
                         <td>@contactPerson.LastName</td>
                         <td>
-                            <a asp-action="Delete" asp-route-id="@contactPerson.Id" class="btn btn-danger btn-sm">Удалить</a>
-                            <a asp-action="AddToMilitaryUnit" asp-route-id="@contactPerson.Id" class="btn btn-secondary btn-sm">Присоединить</a>
+                            <a asp-action="Delete" asp-route-id="@contactPerson.Id" class="action-link">Удалить</a> |
+                            <a asp-action="AddToMilitaryUnit" asp-route-id="@contactPerson.Id" class="action-link">Присоединить</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
 
-        <a asp-action="Create" class="btn btn-primary">Добавить контактное лицо</a>
+        <a asp-action="Create" class="btn">Добавить контактное лицо</a>
     </div>
 
 </body>
