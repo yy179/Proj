@@ -9,6 +9,9 @@ namespace Project.Abstractions.Services
 {
     public interface IUserService
     {
+        Task<string> GenerateJwtToken(UserEntity user);
+        Task<string> AuthenticateAsync(string email, string password);
+        bool VerifyPassword(string password, string storedHash);
         Task<UserEntity> GetByIdAsync(int id);
         Task<IEnumerable<UserEntity>> GetAllAsync();
         Task<UserEntity> GetByEmailAsync(string email);
