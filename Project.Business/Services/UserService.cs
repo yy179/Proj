@@ -1,9 +1,14 @@
-﻿using Project.Abstractions.Services;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Project.Abstractions;
+using Project.Abstractions.Services;
 using Project.DataAccess;
 using Project.Entities;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,10 +17,11 @@ namespace Project.Business.Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public UserService(IUnitOfWork unitOfWork)
+        private readonly JWTSettings _jwtSettings;
+        public UserService(IUnitOfWork unitOfWork, IOptions<JWTSettings> jwtSettings)
         {
             _unitOfWork = unitOfWork;
+            _jwtSettings = jwtSettings.Value;
         }
 
         public async Task<UserEntity> GetByIdAsync(int id)
@@ -54,6 +60,42 @@ namespace Project.Business.Services
         {
             await _unitOfWork.UserRepository.DeleteAsync(id);
             await _unitOfWork.SaveChangesAsync();
+        }
+        public async Task<string> GenerateJwtToken(UserEntity user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role)
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                claims: claims,
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: creds
+            );
+
+            return await Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
+        }
+        public async Task<string> AuthenticateAsync(string email, string password)
+        {
+            var user = await _unitOfWork.UserRepository.GetByEmail(email);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            {
+                throw new UnauthorizedAccessException("Invalid credentials");
+            }
+
+            return await GenerateJwtToken(user);
+        }
+        public bool VerifyPassword(string password, string storedHash)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, storedHash);
         }
     }
 }

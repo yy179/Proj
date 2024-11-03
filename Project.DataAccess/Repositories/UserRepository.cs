@@ -29,7 +29,7 @@ namespace Project.DataAccess.Repositories
         }
         public async Task<UserEntity> GetByEmail(string email)
         {
-            return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email) ?? throw new Exception();
+            return await _context.Users.SingleOrDefaultAsync(user => user.Email == email);
         }
         public async Task<IEnumerable<UserEntity>> GetByRoleAsync(string role)
         {
