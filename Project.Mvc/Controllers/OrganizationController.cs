@@ -22,7 +22,7 @@ namespace Project.Mvc.Controllers
             _volunteerService = volunteerService;
             _organizationService = organizationService;
         }
-        
+
         public async Task<IActionResult> Index()
         {
             var organizations = await _organizationService.GetAllAsync();
