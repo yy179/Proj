@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Project.Abstractions.Services;
@@ -7,6 +8,7 @@ using Project.Entities;
 
 namespace Project.Mvc.Controllers
 {
+    [Authorize]
     public class ContactPersonController : Controller
     {
         private readonly IMilitaryUnitService _militaryUnitService;
@@ -25,7 +27,7 @@ namespace Project.Mvc.Controllers
             return View(contactPersons);
         }
 
-
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int id)
         {
             var contactPerson = await _contactPersonService.GetByIdAsync(id);
@@ -37,14 +39,13 @@ namespace Project.Mvc.Controllers
             return View(contactPerson);
         }
 
-
-
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult> Create()
         {
             return View();
         }
 
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ContactPersonEntity contactPerson)
@@ -64,8 +65,7 @@ namespace Project.Mvc.Controllers
             return View(contactPerson);
         }
 
-
-
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var contactPerson = await _contactPersonService.GetByIdAsync(id);
@@ -76,7 +76,7 @@ namespace Project.Mvc.Controllers
             return View(contactPerson);
         }
 
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ContactPersonEntity contactPerson)
@@ -96,7 +96,7 @@ namespace Project.Mvc.Controllers
             return View(contactPerson);
         }
 
-
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var contactPerson = await _contactPersonService.GetByIdAsync(id);
@@ -107,7 +107,7 @@ namespace Project.Mvc.Controllers
             return View(contactPerson);
         }
 
-
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -125,6 +125,7 @@ namespace Project.Mvc.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddToMilitaryUnit(int contactPersonId, int militaryUnitId)
         {
             try
@@ -143,6 +144,8 @@ namespace Project.Mvc.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddToMilitaryUnit(int id)
         {
             var contactPerson = await _contactPersonService.GetByIdAsync(id);

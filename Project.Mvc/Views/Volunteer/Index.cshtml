@@ -139,17 +139,26 @@
                     <td>@volunteer.LastName</td>
                     <td>@volunteer.City</td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@volunteer.Id" class="action-link">Просмотр</a> |
-                        <a asp-action="Edit" asp-route-id="@volunteer.Id" class="action-link">Редактировать</a> |
-                        <a asp-action="Delete" asp-route-id="@volunteer.Id" class="action-link">Удалить</a> |
-                        <a asp-action="AddToOrganization" asp-route-id="@volunteer.Id" class="action-link">Присоединить</a>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <a asp-action="Details" asp-route-id="@volunteer.Id" class="action-link">Просмотр</a>
+                            <a asp-action="Edit" asp-route-id="@volunteer.Id" class="action-link">Редактировать</a>
+                            <a asp-action="Delete" asp-route-id="@volunteer.Id" class="action-link">Удалить</a>
+                            <a asp-action="AddToOrganization" asp-route-id="@volunteer.Id" class="action-link">Присоединить</a>
+                        }
+                        else
+                        {
+                            <span>Dont have permissions</span>
+                        }
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-
-    <a asp-action="Create" class="btn">Добавить волонтера</a>
+    @if (User.IsInRole("admin"))
+    {
+        <a asp-action="Create" class="btn">Добавить волонтера</a>
+    }
 
 </body>
 </html>

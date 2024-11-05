@@ -138,15 +138,24 @@
                         <td>@contactPerson.FirstName</td>
                         <td>@contactPerson.LastName</td>
                         <td>
-                            <a asp-action="Delete" asp-route-id="@contactPerson.Id" class="action-link">Удалить</a> |
-                            <a asp-action="AddToMilitaryUnit" asp-route-id="@contactPerson.Id" class="action-link">Присоединить</a>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <a asp-action="Delete" asp-route-id="@contactPerson.Id" class="action-link">Удалить</a>
+                                <a asp-action="AddToMilitaryUnit" asp-route-id="@contactPerson.Id" class="action-link">Присоединить</a>
+                            }
+                            else
+                            {
+                                <span>Dont have permissions</span>
+                            }
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-
-        <a asp-action="Create" class="btn">Добавить контактное лицо</a>
+        @if (User.IsInRole("admin"))
+        {
+            <a asp-action="Create" class="btn">Добавить контактное лицо</a>
+        }
     </div>
 
 </body>

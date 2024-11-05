@@ -1,10 +1,12 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Project.Abstractions.Services;
 using Project.Entities;
 
 namespace Project.Mvc.Controllers
 {
+    [Authorize]
     public class OrganizationController : Controller
     {
         private readonly IVolunteerOrganizationService _volunteerOrganizationService;
@@ -20,14 +22,14 @@ namespace Project.Mvc.Controllers
             _volunteerService = volunteerService;
             _organizationService = organizationService;
         }
-        // GET: OrganizationController
+        
         public async Task<IActionResult> Index()
         {
             var organizations = await _organizationService.GetAllAsync();
             return View(organizations);
         }
 
-        // GET: OrganizationController/Details/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int id)
         {
             var organization = await _organizationService.GetByIdAsync(id);
@@ -42,13 +44,13 @@ namespace Project.Mvc.Controllers
             return View(organization);
         }
 
-        // GET: OrganizationController/Create
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: OrganizationController/Create
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(OrganizationEntity organization)
@@ -68,7 +70,7 @@ namespace Project.Mvc.Controllers
             return View(organization);
         }
 
-        // GET: OrganizationController/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var organization = await _organizationService.GetByIdAsync(id);
@@ -79,7 +81,7 @@ namespace Project.Mvc.Controllers
             return View(organization);
         }
 
-        // POST: OrganizationController/Edit/5
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(OrganizationEntity organization)
@@ -99,7 +101,7 @@ namespace Project.Mvc.Controllers
             return View(organization);
         }
 
-        // GET: OrganizationController/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var organization = await _organizationService.GetByIdAsync(id);
@@ -110,7 +112,7 @@ namespace Project.Mvc.Controllers
             return View(organization);
         }
 
-        // POST: OrganizationController/Delete/5
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -126,6 +128,8 @@ namespace Project.Mvc.Controllers
                 return View();
             }
         }
+
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveVolunteer(int volunteerId, int organizationId)

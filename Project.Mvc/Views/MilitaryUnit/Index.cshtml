@@ -134,16 +134,25 @@
                     <tr>
                         <td>@militaryUnit.Name</td>
                         <td>
-                            <a asp-action="Details" asp-route-id="@militaryUnit.Id" class="action-link">Просмотр</a> |
-                            <a asp-action="Edit" asp-route-id="@militaryUnit.Id" class="action-link">Редактировать</a> |
-                            <a asp-action="Delete" asp-route-id="@militaryUnit.Id" class="action-link">Удалить</a>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <a asp-action="Details" asp-route-id="@militaryUnit.Id" class="action-link">Просмотр</a>
+                                <a asp-action="Edit" asp-route-id="@militaryUnit.Id" class="action-link">Редактировать</a>
+                                <a asp-action="Delete" asp-route-id="@militaryUnit.Id" class="action-link">Удалить</a>
+                            }
+                            else
+                            {
+                                <span>Dont have permissions</span>
+                            }
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-
-        <a asp-action="Create" class="btn btn-primary">Добавить военную организацию</a>
+        @if (User.IsInRole("admin"))
+        {
+            <a asp-action="Create" class="btn btn-primary">Добавить военную организацию</a>
+        }
     </div>
 
 </body>

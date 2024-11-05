@@ -138,9 +138,16 @@
                     <td>@organization.City</td>
                     <td>@organization.Description</td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@organization.Id" class="action-link">Просмотр</a> |
-                        <a asp-action="Edit" asp-route-id="@organization.Id" class="action-link">Редактировать</a> |
-                        <a asp-action="Delete" asp-route-id="@organization.Id" class="action-link">Удалить</a>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <a asp-action="Details" asp-route-id="@organization.Id" class="action-link">Просмотр</a>
+                            <a asp-action="Edit" asp-route-id="@organization.Id" class="action-link">Редактировать</a>
+                            <a asp-action="Delete" asp-route-id="@organization.Id" class="action-link">Удалить</a>
+                        }
+                        else
+                        {
+                            <span>Dont have permissions</span>
+                        }
                     </td>
                 </tr>
             }
@@ -148,7 +155,10 @@
     </table>
 
     <div class="text-center">
-        <a asp-action="Create" class="btn">Добавить организацию</a>
+        @if (User.IsInRole("admin"))
+        {
+            <a asp-action="Create" class="btn">Добавить организацию</a>
+        }
     </div>
 
 </body>

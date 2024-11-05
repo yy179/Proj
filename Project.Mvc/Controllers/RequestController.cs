@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Project.Abstractions.Services;
 using Project.Entities;
 
 namespace Project.Mvc.Controllers
 {
+    [Authorize]
     public class RequestController : Controller
     {
         private readonly IRequestService _requestService;
@@ -24,14 +26,13 @@ namespace Project.Mvc.Controllers
             _organizationService = organizationService;
         }
 
-        // GET: Request
         public async Task<IActionResult> Index()
         {
             var requests = await _requestService.GetAllAsync();
             return View(requests);
         }
 
-        // GET: Request/Details/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int id)
         {
             var request = await _requestService.GetByIdAsync(id);
@@ -69,7 +70,7 @@ namespace Project.Mvc.Controllers
             return View(request);
         }
 
-        // POST: Request/Take/5
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> TakeRequestAsVolunteer(int id, int volunteerId)
         {
@@ -85,7 +86,7 @@ namespace Project.Mvc.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
-        // POST: Request/Take/Organization/5
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> TakeRequestAsOrganization(int id, int organizationId)
         {
@@ -101,7 +102,7 @@ namespace Project.Mvc.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
-        // POST: Request/Complete/5
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> CompleteRequestAsVolunteer(int id, int volunteerId)
         {
@@ -118,7 +119,7 @@ namespace Project.Mvc.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
-        // POST: Request/Complete/Organization/5
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> CompleteRequestAsOrganization(int id, int organizationId)
         {
@@ -134,7 +135,8 @@ namespace Project.Mvc.Controllers
 
             return RedirectToAction(nameof(Details), new { id });
         }
-        [HttpGet]
+
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -145,6 +147,7 @@ namespace Project.Mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create(RequestEntity request)
         {
             request.IsActive = true;
@@ -153,8 +156,7 @@ namespace Project.Mvc.Controllers
 
         }
 
-
-        // POST: Request/Delete/5
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
@@ -167,6 +169,8 @@ namespace Project.Mvc.Controllers
             await _requestService.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
+
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> Complete(int id)
         {

@@ -148,19 +148,28 @@
                         <td>@request.Importance</td>
                         <td>@request.IsActive</td>
                         <td>
-                            <a asp-action="Details" asp-route-id="@request.Id" class="action-link">Подробнее</a> |
-                            <form asp-action="Delete" method="post" class="action-link" style="display: inline;">
-                                <input type="hidden" name="id" value="@request.Id" />
-                                <button type="submit" class="action-link" style="border: none; background: none; padding: 0; cursor: pointer;">Удалить</button>
-                            </form>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <a asp-action="Details" asp-route-id="@request.Id" class="action-link">Подробнее</a>
+                                <form asp-action="Delete" method="post" class="action-link" style="display: inline;">
+                                    <input type="hidden" name="id" value="@request.Id" />
+                                    <button type="submit" class="action-link" style="border: none; background: none; padding: 0; cursor: pointer;">Удалить</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span>Dont have permissions</span>
+                            }
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-
-    <a asp-action="Create" class="btn">Добавить заявку</a>
+    @if (User.IsInRole("admin"))
+    {
+        <a asp-action="Create" class="btn">Добавить заявку</a>
+    }
 
 </body>
 </html>

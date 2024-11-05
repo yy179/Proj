@@ -1,10 +1,12 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Project.Abstractions.Services;
 using Project.Entities;
 
 namespace Project.Mvc.Controllers
 {
+    [Authorize]
     public class VolunteerController : Controller
     {
         private readonly IVolunteerOrganizationService _volunteerOrganizationService;
@@ -21,7 +23,6 @@ namespace Project.Mvc.Controllers
             _organizationService = organizationService;
         }
 
-        // GET: Volunteer/Index
         public async Task<IActionResult> Index()
         {
             var volunteers = await _volunteerService.GetAllAsync();
@@ -29,7 +30,7 @@ namespace Project.Mvc.Controllers
             return View(volunteers);
         }
 
-        // GET: Volunteer/Details/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int id)
         {
             var volunteer = await _volunteerService.GetByIdAsync(id);
@@ -44,13 +45,13 @@ namespace Project.Mvc.Controllers
             return View(volunteer);
         }
 
-        // GET: Volunteer/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Volunteer/Create
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(VolunteerEntity volunteer)
@@ -70,7 +71,7 @@ namespace Project.Mvc.Controllers
             return View(volunteer);
         }
 
-        // GET: Volunteer/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var volunteer = await _volunteerService.GetByIdAsync(id);
@@ -81,7 +82,7 @@ namespace Project.Mvc.Controllers
             return View(volunteer);
         }
 
-        // POST: Volunteer/Edit/5
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(VolunteerEntity volunteer)
@@ -101,7 +102,7 @@ namespace Project.Mvc.Controllers
             return View(volunteer);
         }
 
-        // GET: Volunteer/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var volunteer = await _volunteerService.GetByIdAsync(id);
@@ -112,7 +113,7 @@ namespace Project.Mvc.Controllers
             return View(volunteer);
         }
 
-        // POST: Volunteer/Delete/5
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -128,6 +129,8 @@ namespace Project.Mvc.Controllers
                 return View();
             }
         }
+
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToOrganization(int volunteerId, int organizationId)
@@ -137,7 +140,6 @@ namespace Project.Mvc.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid volunteer or organization ID.");
                 return RedirectToAction("Index");
             }
-
             try
             {
                 await _volunteerOrganizationService.AddVolunteerToOrganizationAsync(volunteerId, organizationId);
@@ -160,6 +162,7 @@ namespace Project.Mvc.Controllers
             }
         }
 
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddToOrganization(int id)
         {
             if (id <= 0)
@@ -177,7 +180,5 @@ namespace Project.Mvc.Controllers
             ViewBag.Volunteer = volunteer;
             return View(organizations);
         }
-
-
     }
 }

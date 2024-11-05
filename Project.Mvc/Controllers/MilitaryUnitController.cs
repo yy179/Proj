@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Project.Abstractions.Services;
 using Project.Business.Services;
@@ -6,6 +7,7 @@ using Project.Entities;
 
 namespace Project.Mvc.Controllers
 {
+    [Authorize]
     public class MilitaryUnitController : Controller
     {
         private readonly IMilitaryUnitService _militaryUnitService;
@@ -17,14 +19,14 @@ namespace Project.Mvc.Controllers
             _contactPersonService = contactPersonService;
             _militaryUnitContactPersonService = militaryUnitContactPersonService;
         }
-        // GET: MilitaryUnitController
+
         public async Task<IActionResult> Index()
         {
             var militaryUnits = await _militaryUnitService.GetAllAsync();
             return View(militaryUnits);
         }
 
-        // GET: MilitaryUnitController/Details/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int id)
         {
             var contactPersons = await _militaryUnitService.GetContactPersonsAsync(id);
@@ -39,13 +41,13 @@ namespace Project.Mvc.Controllers
             return View(militaryUnit);
         }
 
-        // GET: MilitaryUnitController/Create
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: MilitaryUnitController/Create
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MilitaryUnitEntity militaryUnit)
@@ -65,7 +67,7 @@ namespace Project.Mvc.Controllers
             return View(militaryUnit);
         }
 
-        // GET: MilitaryUnitController/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var militaryUnit = await _militaryUnitService.GetByIdAsync(id);
@@ -76,7 +78,7 @@ namespace Project.Mvc.Controllers
             return View(militaryUnit);
         }
 
-        // POST: MilitaryUnitController/Edit/5
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(MilitaryUnitEntity militaryUnit)
@@ -96,7 +98,7 @@ namespace Project.Mvc.Controllers
             return View(militaryUnit);
         }
 
-        // GET: MilitaryUnitController/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var militaryUnit = await _militaryUnitService.GetByIdAsync(id);
@@ -107,7 +109,7 @@ namespace Project.Mvc.Controllers
             return View(militaryUnit);
         }
 
-        // POST: MilitaryUnitController/Delete/5
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -123,6 +125,8 @@ namespace Project.Mvc.Controllers
                 return View();
             }
         }
+
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveContactPerson(int contactPersonId, int militaryUnitId)
