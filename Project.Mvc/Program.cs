@@ -11,10 +11,13 @@ using Microsoft.IdentityModel.Tokens;
 using Project.Abstractions;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Project.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWTSettings"));
+builder.Services.AddSingleton<MessageQueueService>();
+builder.Services.AddSignalR();
 
 var secretKey = builder.Configuration.GetSection("JWTSettings:SecretKey").Value;
 var issuer = builder.Configuration.GetSection("JWTSettings:Issuer").Value;
@@ -86,7 +89,7 @@ builder.Services.AddFluentValidationAutoValidation()
 builder.Services.AddValidatorsFromAssemblyContaining<VolunteerValidator>();
 
 var app = builder.Build();
-
+app.MapHub<ChatHub>("/chatHub");
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

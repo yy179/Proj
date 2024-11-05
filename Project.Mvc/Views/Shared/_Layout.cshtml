@@ -91,6 +91,19 @@
                             </li>
                         }
                     </ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <button onclick="openChatModal()">Chat</button>
+                        <div id="chatModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeChatModal()">&times;</span>
+                                <h2>Chat</h2>
+                                <div id="messagesList"></div>
+                                <input id="messageInput" type="text" placeholder="Type a message..." />
+                                <button id="sendButton">Send</button>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </nav>
@@ -112,3 +125,34 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.19/signalr.min.js"></script>
+<script>
+
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chatHub")
+        .build();
+
+    connection.on("ReceiveMessage", (username, message) => {
+        const msg = document.createElement("div");
+        msg.innerHTML = `<strong>${username}:</strong> ${message}`;
+        document.getElementById("messagesList").appendChild(msg);
+    });
+
+    connection.start().catch(err => console.error(err.toString()));
+
+    document.getElementById("sendButton").addEventListener("click", () => {
+        const message = document.getElementById("messageInput").value;
+        const username = "@User.Identity.Name";
+        connection.invoke("SendMessage", username, message).catch(err => console.error(err.toString()));
+        document.getElementById("messageInput").value = '';
+    });
+
+    function openChatModal() {
+        document.getElementById("chatModal").style.display = "flex";
+    }
+
+    function closeChatModal() {
+        document.getElementById("chatModal").style.display = "none";
+    }
+</script>
